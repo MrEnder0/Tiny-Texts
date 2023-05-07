@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blog</title>
+  </head>
+  <body>
+    <h1>Blog Posts</h1>
+    {{#each posts}}
+        <div class="post">
+            <h2>{{title}}</h2>
+            <p>{{content}}</p>
+        </div>
+    {{/each}}
+  </body>
+</html>
