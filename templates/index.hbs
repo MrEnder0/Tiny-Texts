@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Blog</title>
-    <link rel="icon" type="image/x-icon" href="static/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="static/css/style.css">
-  </head>
-  <body>
-    <div class="topnav">
-        <h1>Blog Posts</h1>
-    </div>
-    <div class="center">
-        {{#each posts}}
-            <div class="post">
-                <h2>{{title}}</h2>
-                <p>{{content}}</p>
-            </div>
-        {{/each}}
-    </div>
-  </body>
+    <head>
+        <title>Blog</title>
+        <link rel="icon" type="image/x-icon" href="static/favicon.ico">
+        <link rel="stylesheet" type="text/css" href="static/css/style.css">
+
+        <script type="text/typescript" src="static/js/script.ts"></script>
+    </head>
+    <body>
+        <div class="topnav">
+            <h1>Blog Posts</h1>
+        </div>
+        <div class="center">
+            {{#each posts}}
+                <div class="post">
+                    <h2>{{title}}</h2>
+                    <p>{{content}}</p>
+                </div>
+            {{/each}}
+        </div>
+    </body>
+
+    <footer>
+        <div class="tooltip">
+            <a href="https://github.com/MrEnder0">
+                <span class="tooltiptext">Check out my GitHub</span>
+                <img src="static/img/github.png" alt="github" style="height: 100%;">
+            </a>
+        </div>
+    </footer> 
+
+    <script src="https://rawgit.com/Microsoft/TypeScript/master/lib/typescriptServices.js"></script>
+    <script src="https://rawgit.com/basarat/typescript-script/master/transpiler.js"></script>
 </html>
