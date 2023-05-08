@@ -376,6 +376,7 @@ name = "handlebars-posts"
 version = "0.1.0"
 dependencies = [
  "handlebars",
+ "rand",
  "rocket",
  "serde",
  "serde_json",

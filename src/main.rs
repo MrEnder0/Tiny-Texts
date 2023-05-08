@@ -1,3 +1,4 @@
+use rand::seq::SliceRandom;
 use rocket::{
     serde::Serialize,
     response::content::RawHtml,
@@ -53,11 +54,20 @@ fn not_found() -> rocket::response::status::NotFound<Option<RawHtml<String>>> {
     let mut handlebars = Handlebars::new();
     handlebars.register_template_file("404", "templates/404.hbs").unwrap();
 
-    let path = std::env::current_dir().unwrap().to_str().unwrap().to_string();
+    let messages = vec![
+                                    "Oops! Looks like this page got stuck in the wrong place.".to_string(),
+                                    "Sorry, we're a bit sticky-fingered and misplaced that page.".to_string(),
+                                    "This page has gone rogue and escaped. We're working on finding it.".to_string(),
+                                    "Uh oh, looks like this page fell off the grid.".to_string(),
+                                    "This page has gone missing. We're working on finding it.".to_string(),
+                                    "Looks like this note got lost in translation. We'll get it sorted ASAP.".to_string()
+                                    ];
+
+    let message = messages.choose(&mut rand::thread_rng()).unwrap();
     
-    BTreeMap::new().insert("path".to_string(), path.to_string());
+    BTreeMap::new().insert("404_message".to_string(), message.to_string());
     let mut data = BTreeMap::new();
-    data.insert("path".to_string(), path.to_string());
+    data.insert("404_message".to_string(), message.to_string());
 
     let handlebars_output = handlebars.render("404", &data).unwrap();
 
