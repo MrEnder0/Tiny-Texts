@@ -48,11 +48,28 @@ async fn static_files(file: PathBuf) -> Option<NamedFile> {
     NamedFile::open(Path::new("static/").join(file)).await.ok()
 }
 
+#[catch(404)]
+fn not_found() -> rocket::response::status::NotFound<Option<RawHtml<String>>> {
+    let mut handlebars = Handlebars::new();
+    handlebars.register_template_file("404", "templates/404.hbs").unwrap();
+
+    let path = std::env::current_dir().unwrap().to_str().unwrap().to_string();
+    
+    BTreeMap::new().insert("path".to_string(), path.to_string());
+    let mut data = BTreeMap::new();
+    data.insert("path".to_string(), path.to_string());
+
+    let handlebars_output = handlebars.render("404", &data).unwrap();
+
+    rocket::response::status::NotFound(Some(RawHtml(handlebars_output)))
+}
+
+
 #[launch]
 fn rocket() -> _ {
     if !Path::new("posts.toml").exists() {
         gen_posts();
     }
 
-    rocket::build().mount("/", routes![static_files, index])
+    rocket::build().mount("/", routes![index, static_files]).register("/", catchers![not_found])
 }
