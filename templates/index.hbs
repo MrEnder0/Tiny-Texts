@@ -4,8 +4,7 @@
         <title>Blog</title>
         <link rel="icon" type="image/x-icon" href="static/favicon.ico">
         <link rel="stylesheet" type="text/css" href="static/css/style.css">
-
-        <script type="text/typescript" src="static/js/script.ts"></script>
+        <!--<link rel="script" type="text/javascript" href="static/js/script.js">-->
     </head>
     <body>
         <div class="topnav">
@@ -14,7 +13,9 @@
         <div class="center">
             {{#each posts}}
                 <div class="post">
-                    <h2>{{title}}</h2>
+                    <button onclick="navigator.clipboard.writeText('{{content}}');">
+                        <h2>{{title}}</h2>
+                    </button>
                     <p>{{content}}</p>
                 </div>
             {{/each}}
@@ -29,7 +30,4 @@
             </a>
         </div>
     </footer> 
-
-    <script src="https://rawgit.com/Microsoft/TypeScript/master/lib/typescriptServices.js"></script>
-    <script src="https://rawgit.com/basarat/typescript-script/master/transpiler.js"></script>
 </html>
