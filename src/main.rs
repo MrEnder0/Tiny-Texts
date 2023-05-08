@@ -1,6 +1,17 @@
-use std::collections::BTreeMap;
+use rocket::{
+    serde::Serialize,
+    response::content::RawHtml,
+    fs::NamedFile
+};
+use std::{
+    collections::BTreeMap,
+    path::{PathBuf, Path}
+};
 use handlebars::Handlebars;
-use rocket::{serde::Serialize, response::content::RawHtml};
+
+mod utils;
+
+use utils::toml::*;
 
 #[macro_use]
 extern crate rocket;
@@ -16,18 +27,15 @@ fn index() -> RawHtml<String> {
     let mut handlebars = Handlebars::new();
     handlebars.register_template_file("index", "templates/index.hbs").unwrap();
 
-    let post1 = BlogPost {
-        title: "First Post".to_string(),
-        content: "This is the content of the first post.".to_string(),
-    };
-
-    let post2 = BlogPost {
-        title: "Second Post".to_string(),
-        content: "This is the content of the second post.".to_string(),
-    };
+    let posts = get_posts().posts.into_iter().map(|(title, content)| {
+        BlogPost {
+            title,
+            content
+        }
+    }).collect::<Vec<BlogPost>>();
 
     let mut data = BTreeMap::new();
-    data.insert("posts".to_string(), vec![post1, post2]);
+    data.insert("posts".to_string(), posts);
 
     let handlebars_output = handlebars.render("index", &data).unwrap();
 
@@ -35,7 +43,16 @@ fn index() -> RawHtml<String> {
     RawHtml(handlebars_output)
 }
 
+#[get("/static/<file..>")]
+async fn static_files(file: PathBuf) -> Option<NamedFile> {
+    NamedFile::open(Path::new("static/").join(file)).await.ok()
+}
+
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![index])
+    if !Path::new("posts.toml").exists() {
+        gen_posts();
+    }
+
+    rocket::build().mount("/", routes![static_files, index])
 }
