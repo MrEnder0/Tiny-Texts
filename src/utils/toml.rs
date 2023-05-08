@@ -25,6 +25,7 @@ pub fn get_posts() -> Config {
     posts
 }
 
+//TODO: Add a way to add posts
 pub fn add_post (title: String, content: String) {
     let mut posts_file = get_posts();
     posts_file.posts.insert(title, content);
