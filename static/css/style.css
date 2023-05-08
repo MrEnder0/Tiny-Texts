@@ -32,3 +32,9 @@ body {
     word-break: break-word;
 
 }
+
+.post h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-decoration: underline rgb(0, 0, 0) 3px;
+}
