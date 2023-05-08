@@ -55,13 +55,17 @@ fn not_found() -> rocket::response::status::NotFound<Option<RawHtml<String>>> {
     handlebars.register_template_file("404", "templates/404.hbs").unwrap();
 
     let messages = vec![
-                                    "Oops! Looks like this page got stuck in the wrong place.".to_string(),
-                                    "Sorry, we're a bit sticky-fingered and misplaced that page.".to_string(),
-                                    "This page has gone rogue and escaped. We're working on finding it.".to_string(),
-                                    "Uh oh, looks like this page fell off the grid.".to_string(),
-                                    "This page has gone missing. We're working on finding it.".to_string(),
-                                    "Looks like this note got lost in translation. We'll get it sorted ASAP.".to_string()
-                                    ];
+        "Oops! Looks like this page got stuck in the wrong place.".to_string(),
+        "Sorry, we're a bit sticky-fingered and misplaced that page.".to_string(),
+        "This page has gone rogue and escaped. We're working on finding it.".to_string(),
+        "Uh oh, looks like this page fell off the grid.".to_string(),
+        "This page has gone missing. We're working on finding it.".to_string(),
+        "Looks like this note got lost in translation. We'll get it sorted ASAP.".to_string(),
+        "This page seems to have gone on a solo adventure. We'll track it down soon!".to_string(),
+        "We apologize for this sticky situation. We're working on getting things back to normal.".to_string(),
+        "Whoops! This page took a wrong turn somewhere. We'll redirect it shortly.".to_string(),
+        "Sorry for the mess! This page got a little too attached to its own ideas.".to_string()
+    ];
 
     let message = messages.choose(&mut rand::thread_rng()).unwrap();
     
