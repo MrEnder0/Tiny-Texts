@@ -44,11 +44,15 @@ footer {
     bottom: 0;
     width: 60px;
     height: 60px;
-    margin-left: -0.5rem;
-    margin-bottom: -0.5rem;
-    padding: 0.5rem;
     background-color: #ffffff;
     border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+    padding: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-left: -0.5rem;
+    margin-bottom: -0.5rem;
 }
 
 .tooltip {
