@@ -73,7 +73,7 @@ fn not_found() -> rocket::response::status::NotFound<Option<RawHtml<String>>> {
     let mut data = BTreeMap::new();
     data.insert("error_message".to_string(), message.to_string());
 
-    let handlebars_output = handlebars.render("error", &data).unwrap();
+    let handlebars_output = handlebars.render("404", &data).unwrap();
 
     rocket::response::status::NotFound(Some(RawHtml(handlebars_output)))
 }
@@ -102,7 +102,7 @@ fn internal_error() -> rocket::response::status::NotFound<Option<RawHtml<String>
     let mut data = BTreeMap::new();
     data.insert("error_message".to_string(), message.to_string());
 
-    let handlebars_output = handlebars.render("error", &data).unwrap();
+    let handlebars_output = handlebars.render("500", &data).unwrap();
 
     rocket::response::status::NotFound(Some(RawHtml(handlebars_output)))
 }
