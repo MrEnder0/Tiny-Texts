@@ -52,7 +52,7 @@ async fn static_files(file: PathBuf) -> Option<NamedFile> {
 #[catch(404)]
 fn not_found() -> rocket::response::status::NotFound<Option<RawHtml<String>>> {
     let mut handlebars = Handlebars::new();
-    handlebars.register_template_file("404", "templates/404.hbs").unwrap();
+    handlebars.register_template_file("404", "templates/error.hbs").unwrap();
 
     let messages = vec![
         "Oops! Looks like this page got stuck in the wrong place.".to_string(),
@@ -69,15 +69,43 @@ fn not_found() -> rocket::response::status::NotFound<Option<RawHtml<String>>> {
 
     let message = messages.choose(&mut rand::thread_rng()).unwrap();
     
-    BTreeMap::new().insert("404_message".to_string(), message.to_string());
+    BTreeMap::new().insert("error_message".to_string(), message.to_string());
     let mut data = BTreeMap::new();
-    data.insert("404_message".to_string(), message.to_string());
+    data.insert("error_message".to_string(), message.to_string());
 
-    let handlebars_output = handlebars.render("404", &data).unwrap();
+    let handlebars_output = handlebars.render("error", &data).unwrap();
 
     rocket::response::status::NotFound(Some(RawHtml(handlebars_output)))
 }
 
+#[catch(500)]
+fn internal_error() -> rocket::response::status::NotFound<Option<RawHtml<String>>> {
+    let mut handlebars = Handlebars::new();
+    handlebars.register_template_file("500", "templates/error.hbs").unwrap();
+
+    let messages = vec![
+        "Looks like the notes got stuck together. We're carefully peeling them apart.".to_string(),
+        "We accidentally knocked over our sticky note tower. We're rebuilding it now.".to_string(),
+        "We accidentally knocked over our sticky note tower. We're rebuilding it now.".to_string(),
+        "Our notes are in a bit of a jam. We're trying to unstick them.".to_string(),
+        "The sticky notes got mixed up. We're sorting them out now.".to_string(),
+        "Looks like we ran out of sticky notes. We're restocking ASAP.".to_string(),
+        "The sticky notes are having a party and forgot to invite the server. We're crashing the party now.".to_string(),
+        "The sticky notes got a little too sticky and caused a server malfunction. We're cleaning up the mess.".to_string(),
+        "Our notes got lost in a sea of yellow. We're trying to find the right one.".to_string(),
+        "The sticky notes are rebelling against the server. We're negotiating a truce.".to_string()
+    ];
+
+    let message = messages.choose(&mut rand::thread_rng()).unwrap();
+
+    BTreeMap::new().insert("error_message".to_string(), message.to_string());
+    let mut data = BTreeMap::new();
+    data.insert("error_message".to_string(), message.to_string());
+
+    let handlebars_output = handlebars.render("error", &data).unwrap();
+
+    rocket::response::status::NotFound(Some(RawHtml(handlebars_output)))
+}
 
 #[launch]
 fn rocket() -> _ {
@@ -85,5 +113,5 @@ fn rocket() -> _ {
         gen_posts();
     }
 
-    rocket::build().mount("/", routes![index, static_files]).register("/", catchers![not_found])
+    rocket::build().mount("/", routes![index, static_files]).register("/", catchers![not_found, internal_error])
 }
