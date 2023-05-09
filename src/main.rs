@@ -35,9 +35,6 @@ fn index() -> RawHtml<String> {
         }
     }).collect::<Vec<NoteDetails>>();
 
-    //print out uuid
-    println!("{:?}", posts);
-
     let mut data = BTreeMap::new();
     data.insert("posts".to_string(), posts);
 
