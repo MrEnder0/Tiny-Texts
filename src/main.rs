@@ -28,7 +28,7 @@ fn index() -> RawHtml<String> {
     let mut handlebars = Handlebars::new();
     handlebars.register_template_file("index", "templates/index.hbs").unwrap();
 
-    let posts = get_posts().posts.into_iter().map(|(title, content)| {
+    let posts = get_posts().posts.into_iter().map(|(_uuid, content)| {
         NoteDetails {
             title: content.title,
             content: content.content,
