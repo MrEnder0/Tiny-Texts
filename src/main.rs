@@ -18,7 +18,7 @@ use utils::toml::*;
 extern crate rocket;
 
 #[derive(Debug, Serialize)]
-struct BlogPost {
+struct NoteDetails {
     title: String,
     content: String,
 }
@@ -29,11 +29,14 @@ fn index() -> RawHtml<String> {
     handlebars.register_template_file("index", "templates/index.hbs").unwrap();
 
     let posts = get_posts().posts.into_iter().map(|(title, content)| {
-        BlogPost {
-            title,
-            content
+        NoteDetails {
+            title: content.title,
+            content: content.content,
         }
-    }).collect::<Vec<BlogPost>>();
+    }).collect::<Vec<NoteDetails>>();
+
+    //print out uuid
+    println!("{:?}", posts);
 
     let mut data = BTreeMap::new();
     data.insert("posts".to_string(), posts);
