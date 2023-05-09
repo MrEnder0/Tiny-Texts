@@ -1,8 +1,17 @@
+@font-face {
+    font-family: poppins-bold;
+    src: url(fonts/Poppins-Bold.ttf) format('truetype');
+    font-weight: lighter;
+  }
+
 body {
     background: #badbe5;
 }
 
 .topnav {
+    font-family: poppins-bold;
+    font-weight: bold;
+    font-size: large;
     overflow: hidden;
     position: fixed;
     width: 100%;
