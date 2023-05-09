@@ -1,8 +1,7 @@
 @font-face {
     font-family: poppins-bold;
     src: url(fonts/Poppins-Bold.ttf) format('truetype');
-    font-weight: lighter;
-  }
+}
 
 body {
     background: #badbe5;
