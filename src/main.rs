@@ -44,6 +44,17 @@ fn index() -> RawHtml<String> {
     RawHtml(handlebars_output)
 }
 
+#[get("/add_note")]
+fn add_note() -> RawHtml<String> {
+    let mut handlebars = Handlebars::new();
+    handlebars.register_template_file("add_note", "templates/add_note.hbs").unwrap();
+
+    let handlebars_output = handlebars.render("add_note", &()).unwrap();
+
+    //render as html with css
+    RawHtml(handlebars_output)
+}
+
 #[get("/static/<file..>")]
 async fn static_files(file: PathBuf) -> Option<NamedFile> {
     NamedFile::open(Path::new("static/").join(file)).await.ok()
@@ -113,5 +124,5 @@ fn rocket() -> _ {
         gen_posts();
     }
 
-    rocket::build().mount("/", routes![index, static_files]).register("/", catchers![not_found, internal_error])
+    rocket::build().mount("/", routes![index, add_note, static_files]).register("/", catchers![not_found, internal_error])
 }

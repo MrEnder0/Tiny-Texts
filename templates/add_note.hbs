@@ -10,21 +10,17 @@
             <h1>Tiny Texts</h1>
         </div>
         <div class="center">
-            {{#each posts}}
-                <div class="post">
-                    <button onclick='navigator.clipboard.writeText("{{content}}");' style="background-color: transparent; outline: none; border: none;">
-                        <h2>{{title}}</h2>
-                    </button>
-                    <p>{{content}}</p>
-                </div>
-            {{/each}}
-        </div>
+            <div class="add_note_form">
+                <form action="/submit" method="post">
+                    <label for="title">Note Title:</label>
+                    <input type="text" id="title" name="title"><br>
 
-        <!--Add post button-->
-        <div class="add_note">
-            <a href="/add_note">
-                <img src="static/img/add.png" alt="Add Post" height="60px" width="60px">
-            </a>
+                    <label for="content">Content:</label>
+                    <input type="text" id="content" name="content"><br>
+                    
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
         </div>
     </body>
 
