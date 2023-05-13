@@ -13,6 +13,3 @@ handlebars = "4.3.6"
 toml = "0.7.3"
 rand = "0.8.4"
 uuid = { version = "1.3.2", features = ["v4", "serde"] }
-shuttle-runtime = "0.16.0"
-shuttle-rocket = "0.16.0"
-tokio = "1.28.0"
