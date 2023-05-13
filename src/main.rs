@@ -118,11 +118,9 @@ fn internal_error() -> rocket::response::status::NotFound<Option<RawHtml<String>
     rocket::response::status::NotFound(Some(RawHtml(handlebars_output)))
 }
 
-#[launch]
-fn rocket() -> _ {
-    if !Path::new("posts.toml").exists() {
-        gen_posts();
-    }
+#[shuttle_service::main]
+async fn rocket() -> shuttle_service::ShuttleRocket {
+    let rocket = rocket::build().mount("/", routes![index, add_note, static_files]).register("/", catchers![not_found, internal_error]);
 
-    rocket::build().mount("/", routes![index, add_note, static_files]).register("/", catchers![not_found, internal_error])
+    Ok(rocket)
 }
