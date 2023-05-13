@@ -118,7 +118,9 @@ fn internal_error() -> rocket::response::status::NotFound<Option<RawHtml<String>
     rocket::response::status::NotFound(Some(RawHtml(handlebars_output)))
 }
 
-#[shuttle_service::main]
-async fn rocket() -> shuttle_service::ShuttleRocket {
-    rocket::build().mount("/", routes![index, add_note, static_files]).register("/", catchers![not_found, internal_error])
+#[shuttle_runtime::main]
+async fn rocket() -> shuttle_rocket::ShuttleRocket {
+    let rocket = rocket::build().mount("/", routes![index, add_note, static_files]).register("/", catchers![not_found, internal_error]);
+
+    Ok(rocket.into())
 }
