@@ -13,18 +13,17 @@ body {
     font-size: large;
     overflow: hidden;
     position: fixed;
-    width: 100%;
+    width: 20%;
     top: 0;
 }
 
 .center {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
-    flex-direction: column;
     overflow-y: scroll;
-    overflow-x: hidden;
     scroll-behavior: smooth;
+    padding: 0 20%; /* add 20% padding to left and right sides */
 }
 
 .post {
@@ -33,13 +32,13 @@ body {
     padding: 30px;
     border-radius: 1rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
-    width: fit-content;
-    max-width: 40%;
+    width: calc(33.33% - 10px);
+    margin: 5px;
+    flex-grow: 1; /* allow post to grow and fill empty space */
     word-wrap: break-word;
     overflow-wrap: break-word;
     word-break: break-word;
-
-}
+  }
 
 .post h2 {
     font-size: 2rem;
