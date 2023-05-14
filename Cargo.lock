@@ -372,19 +372,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "handlebars-posts"
-version = "0.1.0"
-dependencies = [
- "handlebars",
- "rand",
- "rocket",
- "serde",
- "serde_json",
- "toml 0.7.3",
- "uuid",
-]
-
-[[package]]
 name = "hashbrown"
 version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1214,6 +1201,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "372950940a5f07bf38dbe211d7283c9e6d7327df53794992d293e534c733d09b"
 dependencies = [
  "time-core",
+]
+
+[[package]]
+name = "tiny-texts"
+version = "0.1.0"
+dependencies = [
+ "handlebars",
+ "rand",
+ "rocket",
+ "serde",
+ "serde_json",
+ "toml 0.7.3",
+ "uuid",
 ]
 
 [[package]]

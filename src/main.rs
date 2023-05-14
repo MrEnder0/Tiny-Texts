@@ -2,7 +2,8 @@ use rand::seq::SliceRandom;
 use rocket::{
     serde::Serialize,
     response::content::RawHtml,
-    fs::NamedFile
+    fs::NamedFile,
+    form::Form
 };
 use std::{
     collections::BTreeMap,
@@ -23,25 +24,60 @@ struct NoteDetails {
     content: String,
 }
 
+#[derive(FromForm)]
+struct SubmittedNote {
+    title: String,
+    content: String,
+}
+
 #[get("/")]
 fn index() -> RawHtml<String> {
     let mut handlebars = Handlebars::new();
-    handlebars.register_template_file("index", "templates/index.hbs").unwrap();
+    handlebars.register_template_file("index", "static/templates/index.hbs").unwrap();
+    handlebars.register_template_file("github_link", "static/templates/github_link.hbs").unwrap();
 
-    let posts = get_posts().posts.into_iter().map(|(_uuid, content)| {
-        NoteDetails {
+    let posts = get_posts()
+        .posts
+        .into_iter()
+        .map(|(_uuid, content)| NoteDetails {
             title: content.title,
             content: content.content,
-        }
-    }).collect::<Vec<NoteDetails>>();
+        })
+        .collect::<Vec<NoteDetails>>();
 
     let mut data = BTreeMap::new();
     data.insert("posts".to_string(), posts);
 
     let handlebars_output = handlebars.render("index", &data).unwrap();
 
+    RawHtml(handlebars_output)
+}
+
+
+
+#[get("/add_note")]
+fn add_note() -> RawHtml<String> {
+    let mut handlebars = Handlebars::new();
+    handlebars.register_template_file("add_note", "static/templates/add_note.hbs").unwrap();
+
+    let github_link = std::fs::read_to_string("static/templates/github_link.hbs").unwrap();
+
+    let mut data = BTreeMap::new();
+    data.insert("github_link".to_string(), github_link.to_string());
+
+    let handlebars_output = handlebars.render("add_note", &data).unwrap();
+
     //render as html with css
     RawHtml(handlebars_output)
+}
+
+#[post("/add_note", data = "<user_input>")]
+fn create_note(user_input: Form<SubmittedNote>) -> rocket::response::Redirect {
+    let title = user_input.title.clone();
+    let content = user_input.content.clone();
+    add_post(title, content);
+
+    rocket::response::Redirect::to("/")
 }
 
 #[get("/static/<file..>")]
@@ -52,7 +88,7 @@ async fn static_files(file: PathBuf) -> Option<NamedFile> {
 #[catch(404)]
 fn not_found() -> rocket::response::status::NotFound<Option<RawHtml<String>>> {
     let mut handlebars = Handlebars::new();
-    handlebars.register_template_file("404", "templates/error.hbs").unwrap();
+    handlebars.register_template_file("404", "static/templates/error.hbs").unwrap();
 
     let messages = vec![
         "Oops! Looks like this page got stuck in the wrong place.".to_string(),
@@ -67,11 +103,12 @@ fn not_found() -> rocket::response::status::NotFound<Option<RawHtml<String>>> {
         "Sorry for the mess! This page got a little too attached to its own ideas.".to_string()
     ];
 
-    let message = messages.choose(&mut rand::thread_rng()).unwrap();
-    
-    BTreeMap::new().insert("error_message".to_string(), message.to_string());
+    let error_message = messages.choose(&mut rand::thread_rng()).unwrap();
+    let github_link = std::fs::read_to_string("static/templates/github_link.hbs").unwrap();
+
     let mut data = BTreeMap::new();
-    data.insert("error_message".to_string(), message.to_string());
+    data.insert("error_message".to_string(), error_message.to_string());
+    data.insert("github_link".to_string(), github_link.to_string());
 
     let handlebars_output = handlebars.render("404", &data).unwrap();
 
@@ -81,7 +118,7 @@ fn not_found() -> rocket::response::status::NotFound<Option<RawHtml<String>>> {
 #[catch(500)]
 fn internal_error() -> rocket::response::status::NotFound<Option<RawHtml<String>>> {
     let mut handlebars = Handlebars::new();
-    handlebars.register_template_file("500", "templates/error.hbs").unwrap();
+    handlebars.register_template_file("500", "static/templates/error.hbs").unwrap();
 
     let messages = vec![
         "Looks like the notes got stuck together. We're carefully peeling them apart.".to_string(),
@@ -96,11 +133,12 @@ fn internal_error() -> rocket::response::status::NotFound<Option<RawHtml<String>
         "The sticky notes are rebelling against the server. We're negotiating a truce.".to_string()
     ];
 
-    let message = messages.choose(&mut rand::thread_rng()).unwrap();
+    let error_message = messages.choose(&mut rand::thread_rng()).unwrap();
+    let github_link = std::fs::read_to_string("static/templates/github_link.hbs").unwrap();
 
-    BTreeMap::new().insert("error_message".to_string(), message.to_string());
     let mut data = BTreeMap::new();
-    data.insert("error_message".to_string(), message.to_string());
+    data.insert("error_message".to_string(), error_message.to_string());
+    data.insert("github_link".to_string(), github_link.to_string());
 
     let handlebars_output = handlebars.render("500", &data).unwrap();
 
@@ -113,5 +151,5 @@ fn rocket() -> _ {
         gen_posts();
     }
 
-    rocket::build().mount("/", routes![index, static_files]).register("/", catchers![not_found, internal_error])
+    rocket::build().mount("/", routes![index, add_note, create_note, static_files]).register("/", catchers![not_found, internal_error])
 }
