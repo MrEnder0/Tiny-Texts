@@ -2,7 +2,8 @@ use rand::seq::SliceRandom;
 use rocket::{
     serde::Serialize,
     response::content::RawHtml,
-    fs::NamedFile
+    fs::NamedFile,
+    form::Form
 };
 use std::{
     collections::BTreeMap,
@@ -19,6 +20,12 @@ extern crate rocket;
 
 #[derive(Debug, Serialize)]
 struct NoteDetails {
+    title: String,
+    content: String,
+}
+
+#[derive(FromForm)]
+struct SubmittedNote {
     title: String,
     content: String,
 }
@@ -62,6 +69,15 @@ fn add_note() -> RawHtml<String> {
 
     //render as html with css
     RawHtml(handlebars_output)
+}
+
+#[post("/add_note", data = "<user_input>")]
+fn create_note(user_input: Form<SubmittedNote>) -> rocket::response::Redirect {
+    let title = user_input.title.clone();
+    let content = user_input.content.clone();
+    add_post(title, content);
+
+    rocket::response::Redirect::to("/")
 }
 
 #[get("/static/<file..>")]
@@ -135,5 +151,5 @@ fn rocket() -> _ {
         gen_posts();
     }
 
-    rocket::build().mount("/", routes![index, add_note, static_files]).register("/", catchers![not_found, internal_error])
+    rocket::build().mount("/", routes![index, add_note, create_note, static_files]).register("/", catchers![not_found, internal_error])
 }
