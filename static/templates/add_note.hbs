@@ -3,22 +3,25 @@
     <head>
         <title>Tiny Texts</title>
         <link rel="icon" type="image/x-icon" href="static/favicon.ico">
-        <link rel="stylesheet" type="text/css" href="static/css/index.css">
+        <link rel="stylesheet" type="text/css" href="static/css/add_note.css">
     </head>
     <body>
         <div class="topnav">
-            <h1>Tiny Texts</h1>
+            <a href="/" style="color: black; text-decoration: none;">
+                <h1>Tiny Texts</h1>
+            </a>
         </div>
-        <div class="center">
-            <div class="add_note_form">
+        <div class="center" style="margin-top: 50vh;">
+            <div class="form_container">
                 <form action="/add_note" method="post">
                     <label for="title">Note Title:</label>
-                    <input type="text" id="title" name="title"><br>
+                    <input type="text" id="title" name="title" value="My Note" required><br>
 
                     <label for="content">Content:</label>
-                    <input type="text" id="content" name="content"><br>
+                    <input type="text" id="content" name="content" required><br>
                     
-                    <input type="submit" value="Submit">
+                    <br>
+                    <input class="submit" type="submit" value="Submit">
                 </form>
             </div>
         </div>
