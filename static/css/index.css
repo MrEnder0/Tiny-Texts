@@ -23,7 +23,7 @@ body {
     justify-content: center;
     overflow-y: scroll;
     scroll-behavior: smooth;
-    padding: 0 20%; /* add 20% padding to left and right sides */
+    padding: 0 20%;
 }
 
 .post {
@@ -32,13 +32,14 @@ body {
     padding: 30px;
     border-radius: 1rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
-    width: calc(25% - 10px);
+    max-width: calc(25% - 10px);
+    min-width: 10%;
     margin: 5px;
-    flex-grow: 1; /* allow post to grow and fill empty space */
+    flex-grow: 1;
     word-wrap: break-word;
     overflow-wrap: break-word;
     word-break: break-word;
-  }
+}
 
 .post h2 {
     font-size: 2rem;
