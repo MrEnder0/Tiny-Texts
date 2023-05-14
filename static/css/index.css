@@ -32,7 +32,7 @@ body {
     padding: 30px;
     border-radius: 1rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
-    width: calc(33.33% - 10px);
+    width: calc(25% - 10px);
     margin: 5px;
     flex-grow: 1; /* allow post to grow and fill empty space */
     word-wrap: break-word;
