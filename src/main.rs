@@ -26,12 +26,8 @@ struct NoteDetails {
 #[get("/")]
 fn index() -> RawHtml<String> {
     let mut handlebars = Handlebars::new();
-    handlebars
-        .register_template_file("index", "static/templates/index.hbs")
-        .unwrap();
-    handlebars
-        .register_template_file("social_links", "static/templates/social_links.hbs")
-        .unwrap();
+    handlebars.register_template_file("index", "static/templates/index.hbs").unwrap();
+    handlebars.register_template_file("github_link", "static/templates/github_link.hbs").unwrap();
 
     let posts = get_posts()
         .posts
@@ -57,10 +53,10 @@ fn add_note() -> RawHtml<String> {
     let mut handlebars = Handlebars::new();
     handlebars.register_template_file("add_note", "static/templates/add_note.hbs").unwrap();
 
-    let social_links = std::fs::read_to_string("static/templates/social_links.hbs").unwrap();
+    let github_link = std::fs::read_to_string("static/templates/github_link.hbs").unwrap();
 
     let mut data = BTreeMap::new();
-    data.insert("social_links".to_string(), social_links.to_string());
+    data.insert("github_link".to_string(), github_link.to_string());
 
     let handlebars_output = handlebars.render("add_note", &data).unwrap();
 
@@ -92,11 +88,11 @@ fn not_found() -> rocket::response::status::NotFound<Option<RawHtml<String>>> {
     ];
 
     let error_message = messages.choose(&mut rand::thread_rng()).unwrap();
-    let social_links = std::fs::read_to_string("static/templates/social_links.hbs").unwrap();
-    
+    let github_link = std::fs::read_to_string("static/templates/github_link.hbs").unwrap();
+
     let mut data = BTreeMap::new();
     data.insert("error_message".to_string(), error_message.to_string());
-    data.insert("social_links".to_string(), social_links.to_string());
+    data.insert("github_link".to_string(), github_link.to_string());
 
     let handlebars_output = handlebars.render("404", &data).unwrap();
 
@@ -122,11 +118,11 @@ fn internal_error() -> rocket::response::status::NotFound<Option<RawHtml<String>
     ];
 
     let error_message = messages.choose(&mut rand::thread_rng()).unwrap();
-    let social_links = std::fs::read_to_string("static/templates/social_links.hbs").unwrap();
+    let github_link = std::fs::read_to_string("static/templates/github_link.hbs").unwrap();
 
     let mut data = BTreeMap::new();
     data.insert("error_message".to_string(), error_message.to_string());
-    data.insert("social_links".to_string(), social_links.to_string());
+    data.insert("github_link".to_string(), github_link.to_string());
 
     let handlebars_output = handlebars.render("500", &data).unwrap();
 
