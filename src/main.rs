@@ -1,4 +1,3 @@
-use rand::seq::SliceRandom;
 use rocket::{
     serde::Serialize,
     response::content::RawHtml,
@@ -9,6 +8,7 @@ use std::{
     collections::BTreeMap,
     path::{PathBuf, Path}
 };
+use rand::seq::SliceRandom;
 use handlebars::Handlebars;
 
 mod utils;
