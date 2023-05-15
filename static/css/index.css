@@ -7,14 +7,19 @@ body {
     background: #E8E8E4;
 }
 
-.topnav {
+.sidebar {
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+    background-color: #DDD4CB;
     font-family: poppins-bold;
+    padding-left: 0.5rem;
     font-weight: bold;
     font-size: large;
     overflow: hidden;
     position: fixed;
-    width: 20%;
+    height: 100%;
+    width: 10%;
     top: 0;
+    left: 0;
 }
 
 .center {
@@ -23,7 +28,8 @@ body {
     justify-content: center;
     overflow-y: scroll;
     scroll-behavior: smooth;
-    padding: 0 20%;
+    padding-left: 12%;
+    padding-right: 2%;
 }
 
 .note {
@@ -63,7 +69,7 @@ footer {
     bottom: 0;
     width: 60px;
     height: 60px;
-    background-color: #ffffff;
+    background-color: #779578;
     border-radius: 0.5rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
     padding: 0.5rem;
