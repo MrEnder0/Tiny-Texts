@@ -12,8 +12,8 @@
             </a>
         </div>
         <div class="center">
-            {{#each posts}}
-                <div class="post">
+            {{#each notes}}
+                <div class="note">
                     <button onclick='navigator.clipboard.writeText("{{content}}");' style="background-color: transparent; outline: none; border: none;">
                         <h2>{{title}}</h2>
                     </button>
@@ -22,10 +22,9 @@
             {{/each}}
         </div>
 
-        <!--Add post button-->
         <div class="add_note">
             <a href="/add_note">
-                <img src="static/img/add.png" alt="Add Post" height="60px" width="60px">
+                <img src="static/img/add.png" alt="Add Note" height="60px" width="60px">
             </a>
         </div>
     </body>

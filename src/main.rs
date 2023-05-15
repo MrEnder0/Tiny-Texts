@@ -13,7 +13,7 @@ use handlebars::Handlebars;
 
 mod utils;
 
-use utils::toml::*;
+use utils::toml;
 
 #[macro_use]
 extern crate rocket;
@@ -36,7 +36,7 @@ fn index() -> RawHtml<String> {
     handlebars.register_template_file("index", "static/templates/index.hbs").unwrap();
     handlebars.register_template_file("github_link", "static/templates/github_link.hbs").unwrap();
 
-    let notes = get_notes()
+    let notes = toml::get_notes()
         .notes
         .into_iter()
         .map(|(_uuid, content)| NoteDetails {
@@ -46,7 +46,7 @@ fn index() -> RawHtml<String> {
         .collect::<Vec<NoteDetails>>();
 
     let mut data = BTreeMap::new();
-    data.insert("posts".to_string(), notes);
+    data.insert("notes".to_string(), notes);
 
     let handlebars_output = handlebars.render("index", &data).unwrap();
 
@@ -75,7 +75,7 @@ fn add_note() -> RawHtml<String> {
 fn create_note(user_input: Form<SubmittedNote>) -> rocket::response::Redirect {
     let title = user_input.title.clone();
     let content = user_input.content.clone();
-    add_post(title, content);
+    toml::add_note(title, content);
 
     rocket::response::Redirect::to("/")
 }
@@ -148,7 +148,7 @@ fn internal_error() -> rocket::response::status::NotFound<Option<RawHtml<String>
 #[launch]
 fn rocket() -> _ {
     if !Path::new("notes.toml").exists() {
-        gen_notes();
+        toml::gen_notes();
     }
 
     rocket::build().mount("/", routes![index, add_note, create_note, static_files]).register("/", catchers![not_found, internal_error])

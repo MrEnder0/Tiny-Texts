@@ -26,7 +26,7 @@ body {
     padding: 0 20%;
 }
 
-.post {
+.note {
     background: #FFD7BA;
     margin: 30px;
     padding: 30px;
@@ -41,19 +41,19 @@ body {
     word-break: break-word;
 }
 
-.post h2 {
+.note h2 {
     font-size: 2rem;
     margin-bottom: 1rem;
     text-decoration: underline rgb(0, 0, 0) 3px;
 }
 
-.post h2:hover {
+.note h2:hover {
     cursor: pointer;
     transform: scale(1.05);
     transition: transform 1.5s ease-out;
 }
 
-.post h2:active {
+.note h2:active {
     transform: scale(1.1);
     transition: transform 500ms ease-out;
 }

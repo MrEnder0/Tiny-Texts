@@ -33,12 +33,12 @@ pub fn gen_notes() {
 }
 
 pub fn get_notes() -> NoteFile {
-    let note_file = std::fs::read_to_string("posts.toml").unwrap();
-    let notes: NoteFile = toml::from_str(&note_file).expect("Invalid posts toml please fix any issues in it or delete it to generate a new one.");
+    let note_file = std::fs::read_to_string("notes.toml").unwrap();
+    let notes: NoteFile = toml::from_str(&note_file).expect("Invalid notes file please fix any issues in it or delete it to generate a new one.");
     notes
 }
 
-pub fn add_post (title: String, content: String) {
+pub fn add_note(title: String, content: String) {
     let mut notes_file = get_notes();
     notes_file.notes.insert(Uuid::new_v4().to_string(), Note {
         uuid: Uuid::new_v4().to_string(),
